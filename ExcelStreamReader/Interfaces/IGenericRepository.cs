@@ -3,7 +3,7 @@ using CoreData.Entities.LtCustomers;
 
 namespace ExcelStreamReaderConsole.Interfaces;
 
-public interface IGenericRepository<T> where T : BaseDbObject<LtCustomers>
+public interface IGenericRepository<T> /*where T : BaseDbObject<LtCustomers>*/
 {
     Task<List<T>> GetAll();
     Task<T> GetById(int id);

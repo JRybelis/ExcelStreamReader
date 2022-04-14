@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoreData;
 using CoreData.Entities.LtCustomers;
+using CoreData.Interfaces;
 using ExcelStreamReaderConsole.Data;
 using ExcelStreamReaderConsole.Interfaces;
 using Microsoft.EntityFrameworkCore;
