@@ -1,12 +1,19 @@
 using System.Data;
+using CoreData.Dtos.LtCustomers;
+using CoreData.Entities.LtCustomers;
 using ExcelDataReader;
 
 namespace ExcelStreamReaderConsole;
 
-public class LtCustomersService
+public class LtCustomersService<TDto> where TDto : LtCustomersDto
 {
     public static async Task<List<List<LtCustomers>>> ReadExcelData(string excelDocumentLocation)
     {
+        var ExcelDocumentLocation = @"C:\Users\jokubasr\Downloads\report.xlsx";
+        var longTermCustomerService = new LtCustomersService<LtCustomersDto>();
+        var ltCustomersListDocument = LtCustomersService<LtCustomersDto>.ReadExcelData(ExcelDocumentLocation);
+        var ltCustomersList = new List<LtCustomers>();
+
         FileStream fileStream = File.Open(excelDocumentLocation, FileMode.Open, FileAccess.Read);
         IExcelDataReader excelReader = null;
 
