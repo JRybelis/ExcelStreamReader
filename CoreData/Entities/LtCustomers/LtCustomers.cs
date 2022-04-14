@@ -3,7 +3,7 @@ using ExcelStreamReaderConsole;
 
 namespace CoreData.Entities.LtCustomers;
 
-public class LtCustomers : BaseDbObject<LtCustomers>, IDataObject
+public class LtCustomers : IDataObject
 {
     public long Id { get; set; }
     public bool ArchiveRow { get; }
@@ -36,7 +36,7 @@ public class LtCustomers : BaseDbObject<LtCustomers>, IDataObject
     public string VehicleTypeTitle { get; set; }
     public UsersLogActionEnum UsersLogActionId { get; set; }
     
-    public void Create(IDatabase db = default(IDatabase))
+    /*public void Create(IDatabase db = default(IDatabase))
     {
         throw new NotImplementedException();
     }
@@ -59,5 +59,6 @@ public class LtCustomers : BaseDbObject<LtCustomers>, IDataObject
     public long GetGrid(IDatabase db)
     {
         throw new NotImplementedException();
-    }
+    }*/
+    public long TotalCount { get; set; }
 }
