@@ -1,13 +1,10 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using AutoMapper;
 using CoreData.Dtos.LtCustomers;
 using CoreData.Entities.LtCustomers;
-using ExcelStreamReaderConsole.Interfaces;
-using Microsoft.AspNetCore.Components;
+using ExcelStreamReader.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExcelStreamReaderConsole.Controllers;
+namespace ExcelStreamReader.Controllers;
 
 [ApiController]
 [Microsoft.AspNetCore.Components.Route("[controller]")]
@@ -22,7 +19,7 @@ public class LtCustomerController : GenericControllerBase<LtCustomersDto, LtCust
         _mapper = mapper;
     }
 
-    [HttpGet]
+    /*[HttpGet]
     public override async Task<IEnumerable<LtCustomersDto>> GetAll()
     {
         var entities = await _repository.GetAll();
@@ -48,6 +45,6 @@ public class LtCustomerController : GenericControllerBase<LtCustomersDto, LtCust
     public async Task Delete(int id)
     {
         await _repository.Delete(id);
-    }
+    }*/
     
 }

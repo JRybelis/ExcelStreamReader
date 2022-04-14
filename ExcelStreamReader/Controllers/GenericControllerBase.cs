@@ -1,10 +1,10 @@
 using AutoMapper;
 using CoreData.Dtos.LtCustomers;
 using CoreData.Entities.LtCustomers;
-using ExcelStreamReaderConsole.Interfaces;
+using ExcelStreamReader.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExcelStreamReaderConsole.Controllers;
+namespace ExcelStreamReader.Controllers;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,23 +1,17 @@
+using ExcelStreamReader.Controllers;
+using ExcelStreamReader.Data;
+using ExcelStreamReader.Interfaces;
+using ExcelStreamReader.Repositories;
+using ExcelStreamReader.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ExcelStreamReaderConsole.Controllers;
-using ExcelStreamReaderConsole.Data;
-using ExcelStreamReaderConsole.Interfaces;
-using ExcelStreamReaderConsole.Repositories;
-using Microsoft.EntityFrameworkCore;
 
-namespace ExcelStreamReaderConsole;
+namespace ExcelStreamReader;
 
 public class Startup
 {
@@ -40,11 +34,11 @@ public class Startup
 
         services.AddScoped(typeof(LtCustomersService<>));
 
-        services.AddControllers();
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo {Title = "ExcelStreamReader", Version = "v1"});
         });
+        services.AddControllers();
     }
     
     // This method gets called by the runtime. Use this method to configure the HTTP requet pipeline.
@@ -53,8 +47,17 @@ public class Startup
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExcelStreamReader v1"));
+            
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExcelStreamReader v1");
+                c.RoutePrefix = "swagger";
+            });
         }
 
         app.UseHttpsRedirection();

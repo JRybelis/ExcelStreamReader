@@ -1,7 +1,7 @@
 using CoreData.Entities.LtCustomers;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExcelStreamReaderConsole.Data;
+namespace ExcelStreamReader.Data;
 
 public class DataContext : DbContext
 {

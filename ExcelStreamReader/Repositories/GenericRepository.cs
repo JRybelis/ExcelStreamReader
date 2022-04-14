@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CoreData;
 using CoreData.Entities.LtCustomers;
-using CoreData.Interfaces;
-using ExcelStreamReaderConsole.Data;
-using ExcelStreamReaderConsole.Interfaces;
+using ExcelStreamReader.Data;
+using ExcelStreamReader.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExcelStreamReaderConsole.Repositories;
+namespace ExcelStreamReader.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : LtCustomers
 {

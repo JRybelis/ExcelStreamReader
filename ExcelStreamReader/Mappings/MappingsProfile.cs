@@ -2,7 +2,7 @@ using AutoMapper;
 using CoreData.Dtos.LtCustomers;
 using CoreData.Entities.LtCustomers;
 
-namespace ExcelStreamReaderConsole.Mappings;
+namespace ExcelStreamReader.Mappings;
 
 public class MappingsProfile : Profile
 {

@@ -1,7 +1,4 @@
-using CoreData;
-using CoreData.Entities.LtCustomers;
-
-namespace ExcelStreamReaderConsole.Interfaces;
+namespace ExcelStreamReader.Interfaces;
 
 public interface IGenericRepository<T> /*where T : BaseDbObject<LtCustomers>*/
 {

@@ -3,7 +3,7 @@ using CoreData.Dtos.LtCustomers;
 using CoreData.Entities.LtCustomers;
 using ExcelDataReader;
 
-namespace ExcelStreamReaderConsole;
+namespace ExcelStreamReader.Services;
 
 public class LtCustomersService<TDto> where TDto : LtCustomersDto
 {
