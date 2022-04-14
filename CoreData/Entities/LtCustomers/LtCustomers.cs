@@ -1,8 +1,17 @@
-namespace ExcelStreamReaderConsole;
+using CoreData.Interfaces;
+using ExcelStreamReaderConsole;
 
-public class LtCustomers
+namespace CoreData.Entities.LtCustomers;
+
+public class LtCustomers : BaseDbObject<LtCustomers>, IDataObject
 {
     public long Id { get; set; }
+    public bool ArchiveRow { get; }
+    public bool Deleted { get; set; }
+    public long UsersLogId { get; set; }
+    public long Grid { get; set; }
+    public bool GridSupported { get; }
+    public bool SyncEnabled { get; }
     public string PlateNumber { get; set; }
     public DateTime? ValidFrom { get; set; }
     public DateTime? ValidTo { get; set; }
@@ -26,4 +35,29 @@ public class LtCustomers
     public bool IsInLot { get; set; }
     public string VehicleTypeTitle { get; set; }
     public UsersLogActionEnum UsersLogActionId { get; set; }
+    
+    public void Create(IDatabase db = default(IDatabase))
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Update(IDatabase db = default(IDatabase))
+    {
+        throw new NotImplementedException();
+    }
+
+    public long Delete(IDatabase db = default(IDatabase))
+    {
+        throw new NotImplementedException();
+    }
+
+    public long SyncCreate(SyncMode mode, IDatabase db)
+    {
+        throw new NotImplementedException();
+    }
+
+    public long GetGrid(IDatabase db)
+    {
+        throw new NotImplementedException();
+    }
 }
