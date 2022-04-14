@@ -1,8 +1,6 @@
-using ExcelStreamReaderConsole;
-
 namespace CoreData.Interfaces;
 
-public interface IDataObject
+public interface IDataObject : ITotalCount
 {
     /// <summary>
     /// Local record ID (primary key)
@@ -25,18 +23,4 @@ public interface IDataObject
     /// </summary>
     bool SyncEnabled { get; }
     
-    void Create(IDatabase db = null);
-    void Update(IDatabase db = null);
-    long Delete(IDatabase db = null);
-    
-    /// <summary>
-    /// Synchronise Create operation.
-    /// </summary>
-    /// <returns>0 or GRID value, which needs to be returned to the remote server.</returns>
-    long SyncCreate(SyncMode mode, IDatabase db);
-    
-    /// <summary>
-    /// Takes the GRID value from the DB, not from Grid property.
-    /// </summary>
-    long GetGrid(IDatabase db);
 }
