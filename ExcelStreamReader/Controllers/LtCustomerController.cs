@@ -2,6 +2,7 @@ using AutoMapper;
 using CoreData.Dtos.LtCustomers;
 using CoreData.Entities.LtCustomers;
 using ExcelStreamReader.Interfaces;
+using ExcelStreamReader.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExcelStreamReader.Controllers;
@@ -19,6 +20,22 @@ public class LtCustomerController : GenericControllerBase<LtCustomersDto, LtCust
         _mapper = mapper;
     }
 
+    [HttpPost]
+    public async Task Import(string documentLocation)
+    {
+        // var longTermCustomerService = new LtCustomersService<LtCustomersDto>();
+        var listLtCustomersDtos = LtCustomersService.ReadExcelData(documentLocation).Result;
+        
+        foreach (var ltCustomersDtos in listLtCustomersDtos)
+        {
+            foreach (var ltCustomersDto in ltCustomersDtos)
+            {
+                var entity = _mapper.Map<LtCustomers>(ltCustomersDtos);
+                await _repository.Upsert(entity);
+            }
+        }
+    }
+    
     /*[HttpGet]
     public override async Task<IEnumerable<LtCustomersDto>> GetAll()
     {
