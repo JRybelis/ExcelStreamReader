@@ -10,12 +10,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using NLog;
 
 namespace ExcelStreamReader;
 
 public class Startup
 {
-    public IConfiguration Configuration { get; set; }
+    private IConfiguration Configuration { get; }
     
     public Startup(IConfiguration configuration)
     {
@@ -27,12 +28,27 @@ public class Startup
     {
         var defaultConnectionString = Configuration.GetConnectionString("DefaultConnectionString");
 
+        var nLogConfig = new NLog.Config.LoggingConfiguration();
+        // Targets where to Log to: File and Console
+        var logFile = new NLog.Targets.FileTarget("logFile") {FileName = "file.txt"};
+        var logConsole = new NLog.Targets.ConsoleTarget("logConsole");
+        
+        // Rules for mapping loggers to targets
+        nLogConfig.AddRule(LogLevel.Info, LogLevel.Fatal, logConsole);
+        nLogConfig.AddRule(LogLevel.Debug, LogLevel.Fatal, logFile);
+        
+        // Apply config
+        NLog.LogManager.Configuration = nLogConfig;
+
         services.AddAutoMapper(typeof(Startup));
-        services.AddDbContext<DataContext>(d => d.UseNpgsql(defaultConnectionString));
+        services.AddDbContext<DataContext>(d =>
+        {
+            if (defaultConnectionString != null) d.UseNpgsql(defaultConnectionString);
+        });
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped(typeof(GenericControllerBase<,>));
 
-        services.AddScoped(typeof(LtCustomersService<>));
+        services.AddScoped(typeof(LtCustomersService));
 
         services.AddSwaggerGen(c =>
         {
@@ -41,8 +57,8 @@ public class Startup
         services.AddControllers();
     }
     
-    // This method gets called by the runtime. Use this method to configure the HTTP requet pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
         {
