@@ -1,5 +1,6 @@
-using pbr = global::Google.Protobuf.Reflection;
-namespace ExcelStreamReaderConsole;
+using pbr = Google.Protobuf.Reflection;
+
+namespace CoreData.Enums;
 
 public enum VehicleTypeEnum
 {
