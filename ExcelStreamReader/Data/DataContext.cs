@@ -5,23 +5,29 @@ namespace ExcelStreamReader.Data;
 
 public class DataContext : DbContext
 {
-    public DbSet<LtCustomers> LtCustomers { get; set; }
     public DataContext(DbContextOptions options) : base(options)
     {
-        
     }
+    
+    // Entities
+    public DbSet<LtCustomers> LtCustomers { get; set; }
 
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+    }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ConfigureEntityPrimaryKeys(modelBuilder);
         ConfigureEntityProperties(modelBuilder);
-        ConfigureEntityRelationships(modelBuilder);
+        // ConfigureEntityRelationships(modelBuilder);
     }
 
-    private static void ConfigureEntityRelationships(ModelBuilder modelBuilder)
+    /*private static void ConfigureEntityRelationships(ModelBuilder modelBuilder)
     {
         throw new NotImplementedException();
-    }
+    }*/
 
     private static void ConfigureEntityProperties(ModelBuilder modelBuilder)
     {
