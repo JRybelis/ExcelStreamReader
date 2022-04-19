@@ -21,8 +21,8 @@ public class LtCustomersService
         {
             if (excelDocumentLocation.EndsWith(".xls"))
             {
-                // excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
-                excelReader = ExcelReaderFactory.CreateCsvReader(fileStream);
+                excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
+                // excelReader = ExcelReaderFactory.CreateCsvReader(fileStream);
             }
 
             if (excelDocumentLocation.EndsWith(".xlsx"))
@@ -32,7 +32,7 @@ public class LtCustomersService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Logger.Error(e);
             throw;
         }
         
@@ -48,9 +48,9 @@ public class LtCustomersService
                 var ltCustomersDtos = await PopulateLtCustomersDtos(table);
                 listLtCustomersDtos.Add(ltCustomersDtos);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Logger.Error($"Populating LtCustomersDtos with {nameof(table)} data failed with.", ex);
+                Logger.Error($"Populating LtCustomersDtos with {nameof(table)} data failed with.");
                 throw;
             }
         }
@@ -71,15 +71,18 @@ public class LtCustomersService
                 var row = table.Rows[rowIndex];
                 
                 if (rowIndex == 0) continue;
+
+                ltCustomersDto.LtcGroupId = /*Convert.ToInt64((double)row["Column0"]); */long.Parse(row["Column0"].ToString());
+                ltCustomersDto.LtCustomerName = row["Column1"].ToString();
+                ltCustomersDto.PlateNumber = row["Column2"].ToString();
+                ltCustomersDto.Comment = row["Column3"].ToString() ?? "-"; // Comments - optional
+                ltCustomersDto.IsInLot = bool.Parse(row["Column4"].ToString());
+                ltCustomersDto.ValidFrom = DateTime.ParseExact(row["Column5"].ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                ltCustomersDto.ValidTo = DateTime.ParseExact(row["Column6"].ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                ltCustomersDto.Enabled = bool.Parse(row["Column7"].ToString());
+                ltCustomersDto.LotPlaceTitle = row["Column8"].ToString();
+                ltCustomersDto.AdditionalPlateNumbers = row["Column9"].ToString() ?? "-"; // AdditionalPlateNumbers - optional 
                 
-                ltCustomersDto.Id = Convert.ToInt64((double)row["Column0"]); // priskirti nereikia ? 
-                ltCustomersDto.LtCustomerName = (string) row["Column1"];
-                ltCustomersDto.PlateNumber = (string) row["Column2"];
-                ltCustomersDto.IsInLot = bool.Parse((string) row["Column3"]);
-                ltCustomersDto.ValidFrom = DateTime.ParseExact((string) row["Column4"], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                ltCustomersDto.ValidTo = DateTime.ParseExact((string) row["Column5"], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                ltCustomersDto.Enabled = bool.Parse((string) row["Column6"]);
-                ltCustomersDto.LotPlaceTitle = row["Column7"].ToString();
                 
                 ltCustomersDtos.Add(ltCustomersDto);
             }
