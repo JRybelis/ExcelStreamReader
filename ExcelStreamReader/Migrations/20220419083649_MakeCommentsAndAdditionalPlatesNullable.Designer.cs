@@ -3,6 +3,7 @@ using System;
 using ExcelStreamReader.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExcelStreamReader.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220419083649_MakeCommentsAndAdditionalPlatesNullable")]
+    partial class MakeCommentsAndAdditionalPlatesNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,34 +40,35 @@ namespace ExcelStreamReader.Migrations
                         .HasMaxLength(724)
                         .HasColumnType("character varying(724)");
 
-                    b.Property<int?>("CompanyDetailsId")
+                    b.Property<int>("CompanyDetailsId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("CompanySlots")
                         .HasColumnType("integer");
 
-                    b.Property<long?>("CustomerId")
+                    b.Property<long>("CustomerId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool?>("Deleted")
+                    b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("boolean");
 
-                    b.Property<long?>("Grid")
+                    b.Property<long>("Grid")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsInLot")
                         .HasColumnType("boolean");
 
-                    b.Property<bool?>("IsLtCustomerAdditionalPlate")
+                    b.Property<bool>("IsLtCustomerAdditionalPlate")
                         .HasColumnType("boolean");
 
-                    b.Property<long?>("LotPlaceId")
+                    b.Property<long>("LotPlaceId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("LotPlaceTitle")
@@ -78,17 +81,19 @@ namespace ExcelStreamReader.Migrations
                         .HasMaxLength(331)
                         .HasColumnType("character varying(331)");
 
-                    b.Property<long?>("LtcGroupId")
+                    b.Property<long>("LtcGroupId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("LtcGroupName")
+                        .IsRequired()
                         .HasMaxLength(331)
                         .HasColumnType("character varying(331)");
 
-                    b.Property<int?>("PaymentOption")
+                    b.Property<int>("PaymentOption")
                         .HasColumnType("integer");
 
                     b.Property<string>("PincodeHash")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PlateNumber")
@@ -96,16 +101,16 @@ namespace ExcelStreamReader.Migrations
                         .HasMaxLength(51)
                         .HasColumnType("character varying(51)");
 
-                    b.Property<int?>("PriceRateId")
+                    b.Property<int>("PriceRateId")
                         .HasColumnType("integer");
 
-                    b.Property<long?>("TotalCount")
+                    b.Property<long>("TotalCount")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("UsersLogActionId")
+                    b.Property<int>("UsersLogActionId")
                         .HasColumnType("integer");
 
-                    b.Property<long?>("UsersLogId")
+                    b.Property<long>("UsersLogId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ValidFrom")
@@ -118,6 +123,7 @@ namespace ExcelStreamReader.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("VehicleTypeTitle")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

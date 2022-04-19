@@ -3,6 +3,7 @@ using System;
 using ExcelStreamReader.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExcelStreamReader.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220419084543_MakeOtherPropsNullable")]
+    partial class MakeOtherPropsNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,16 @@ namespace ExcelStreamReader.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool?>("Deleted")
+                    b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("boolean");
 
-                    b.Property<long?>("Grid")
+                    b.Property<long>("Grid")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsInLot")
@@ -82,6 +85,7 @@ namespace ExcelStreamReader.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("LtcGroupName")
+                        .IsRequired()
                         .HasMaxLength(331)
                         .HasColumnType("character varying(331)");
 
@@ -99,13 +103,13 @@ namespace ExcelStreamReader.Migrations
                     b.Property<int?>("PriceRateId")
                         .HasColumnType("integer");
 
-                    b.Property<long?>("TotalCount")
+                    b.Property<long>("TotalCount")
                         .HasColumnType("bigint");
 
                     b.Property<int?>("UsersLogActionId")
                         .HasColumnType("integer");
 
-                    b.Property<long?>("UsersLogId")
+                    b.Property<long>("UsersLogId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ValidFrom")

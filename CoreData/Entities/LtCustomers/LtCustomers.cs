@@ -6,35 +6,35 @@ namespace CoreData.Entities.LtCustomers;
 public class LtCustomers : IDataObject
 {
     public long Id { get; set; }
-    public bool ArchiveRow { get; }
-    public bool Deleted { get; set; }
-    public long UsersLogId { get; set; }
-    public long Grid { get; set; }
-    public bool GridSupported { get; }
-    public bool SyncEnabled { get; }
+    public bool? ArchiveRow { get; } // kol kas nullable.
+    public bool? Deleted { get; set; } // kol kas nullable.
+    public long? UsersLogId { get; set; } // kol kas nullable.
+    public long? Grid { get; set; } // kol kas nullable.
+    public bool? GridSupported { get; } // kol kas nullable.
+    public bool? SyncEnabled { get; } // kol kas nullable.
     public string PlateNumber { get; set; }
     public DateTime? ValidFrom { get; set; }
     public DateTime? ValidTo { get; set; }
-    public string LtCustomerName { get; set; }
-    public long LtcGroupId { get; set; }
-    public string Comment { get; set; }
+    public string? LtCustomerName { get; set; } // kol kas nullable.
+    public long? LtcGroupId { get; set; } // kol kas nullable.
+    public string? Comment { get; set; } // kol kas nullable.
     public bool Enabled { get; set; }
-    public string PincodeHash { get; set; }
-    public long CustomerId { get; set; }
-    public long LotPlaceId { get; set; }
+    public string? PincodeHash { get; set; } // kol kas nullable.
+    public long? CustomerId { get; set; } // kol kas nullable.
+    public long? LotPlaceId { get; set; } // kol kas nullable.
     public VehicleTypeEnum VehicleType { get; set; } = VehicleTypeEnum.Car;
-    public string LtcGroupName { get; set; }
-    public string CustomerName { get; set; }
+    public string? LtcGroupName { get; set; } // kol kas nullable.
+    public string? CustomerName { get; set; } // kol kas nullable.
     public int? CompanySlots { get; private set; }
-    public int PriceRateId { get; private set; }
-    public int CompanyDetailsId { get; set; }
-    public bool IsLtCustomerAdditionalPlate { get; set; }
+    public int? PriceRateId { get; private set; } // kol kas nullable.
+    public int? CompanyDetailsId { get; set; } // kol kas nullable.
+    public bool? IsLtCustomerAdditionalPlate { get; set; } // kol kas nullable.
     public string LotPlaceTitle { get; set; }
-    public string AdditionalPlateNumbers { get; set; }
-    public PaymentOptionsEnum PaymentOption { get; set; }
+    public string? AdditionalPlateNumbers { get; set; } // kol kas nullable
+    public PaymentOptionsEnum? PaymentOption { get; set; } // kol kas nullable.
     public bool IsInLot { get; set; }
-    public string VehicleTypeTitle { get; set; }
-    public UsersLogActionEnum UsersLogActionId { get; set; }
+    public string? VehicleTypeTitle { get; set; } // kol kas nullable.
+    public UsersLogActionEnum? UsersLogActionId { get; set; } // kol kas nullable.
     
     /*public void Create(IDatabase db = default(IDatabase))
     {
@@ -60,5 +60,5 @@ public class LtCustomers : IDataObject
     {
         throw new NotImplementedException();
     }*/
-    public long TotalCount { get; set; }
+    public long? TotalCount { get; set; }
 }
