@@ -5,7 +5,7 @@ public interface IDataObject : ITotalCount
     /// <summary>
     /// Local record ID (primary key)
     /// </summary>
-    public long Id { get; set; }
+    public long? Id { get; set; }
     bool? ArchiveRow { get; } // kol kas nullable.
     public bool? Deleted { get; set; } // kol kas nullable.
     public long? UsersLogId { get; set; } // kol kas nullable.
