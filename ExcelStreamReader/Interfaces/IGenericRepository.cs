@@ -7,5 +7,4 @@ public interface IGenericRepository<T> /*where T : BaseDbObject<LtCustomers>*/
     Task Upsert(T entity);
     Task Delete(int id);
     Task<T> GetByName(string itemName);
-    Task Import(T entity, int quantity);
 }

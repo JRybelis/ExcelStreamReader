@@ -32,12 +32,20 @@ public class GenericRepository<T> : IGenericRepository<T> where T : LtCustomers
 
     public async Task Upsert(T entity)
     {
-        if (entity.Id is not 0)
+        var existingLtCustomer = await CheckForExistingLtCustomer(entity.LtcGroupId, entity.PlateNumber);
+        
+        if (entity.LtcGroupId is not 0 && entity.LtcGroupId is not null && existingLtCustomer is not null)
         {
             _context.Update(entity);
-        } else
+        } else if (entity.LtcGroupId is 0)
         {
-            _context.Add(entity);
+            throw new ArgumentOutOfRangeException(nameof(entity),
+                "does not belong to any subscriber group (groupId 0). Please select another groupId number, to import this subscriber.");
+        } 
+        else // no LtcGroupId or no existing booking with such an id
+        {
+            /*entity.LtcGroupId =*/ // need to set a group id from request URL. 
+            _context.Add(entity); 
         }
 
         await _context.SaveChangesAsync();
@@ -67,8 +75,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : LtCustomers
         return entity;
     }
 
-    public Task Import(T entity, int quantity) // same as upsert? 
+    private async Task<LtCustomers> CheckForExistingLtCustomer(long? LtcGroupId, string plateNumber)
     {
-        throw new NotImplementedException();
+        var existingLtCustomer = await _context.LtCustomers
+            .Where(LTC => LTC.Deleted == false && LTC.LtcGroupId == LtcGroupId)
+            .Include(LTC => LTC.PlateNumber == plateNumber).SingleOrDefaultAsync();
+
+        return existingLtCustomer ?? null;
     }
 }
