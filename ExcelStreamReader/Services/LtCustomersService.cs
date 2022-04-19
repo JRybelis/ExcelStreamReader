@@ -1,4 +1,5 @@
 using System.Data;
+using System.Globalization;
 using CoreData.Dtos.LtCustomers;
 using ExcelDataReader;
 
@@ -11,10 +12,11 @@ public class LtCustomersService
     {
         // var ExcelDocumentLocation = @"C:\Users\jokubasr\Downloads\report.xlsx";
         var ltCustomersList = new List<LtCustomersDto>();
-
-        var fileStream = File.Open(excelDocumentLocation, FileMode.Open, FileAccess.Read);
         IExcelDataReader? excelReader = null;
-
+        
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        var fileStream = File.Open(excelDocumentLocation, FileMode.Open, FileAccess.Read);
+        
         try
         {
             if (excelDocumentLocation.EndsWith(".xls"))
@@ -60,29 +62,31 @@ public class LtCustomersService
     private static Task<List<LtCustomersDto>> PopulateLtCustomersDtos(DataTable table)
     {
         var ltCustomersDtos = new List<LtCustomersDto>(); // == table
-        var ltCustomersDto = new LtCustomersDto();
         
         for (var rowIndex = 0; rowIndex < table.Rows.Count; rowIndex++)
         {
             if (rowIndex >= 0 && table.Rows.Count > rowIndex)
             {
+                var ltCustomersDto = new LtCustomersDto();
                 var row = table.Rows[rowIndex];
+                
                 if (rowIndex == 0) continue;
                 
                 ltCustomersDto.Id = Convert.ToInt64((double)row["Column0"]); // priskirti nereikia ? 
-                ltCustomersDto.Name = (string) row["Column1"];
-                ltCustomersDto.NumberPlateNo = (string) row["Column2"];
-                ltCustomersDto.InLot = bool.Parse((string) row["Column3"]);
-                ltCustomersDto.ValidFrom = DateTime.Parse((string) row["Column4"]);
-                ltCustomersDto.ValidTo = DateTime.Parse((string) row["Column5"]);
-                ltCustomersDto.Active = bool.Parse((string) row["Column6"]);
-                ltCustomersDto.Slot = (string) row["Column7"];
+                ltCustomersDto.LtCustomerName = (string) row["Column1"];
+                ltCustomersDto.PlateNumber = (string) row["Column2"];
+                ltCustomersDto.IsInLot = bool.Parse((string) row["Column3"]);
+                ltCustomersDto.ValidFrom = DateTime.ParseExact((string) row["Column4"], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                ltCustomersDto.ValidTo = DateTime.ParseExact((string) row["Column5"], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                ltCustomersDto.Enabled = bool.Parse((string) row["Column6"]);
+                ltCustomersDto.LotPlaceTitle = row["Column7"].ToString();
+                
+                ltCustomersDtos.Add(ltCustomersDto);
             }
             else
             {
-                throw new ArgumentNullException(exc,"An empty import document provided. Please upload relevant data to import.");
+                throw new ArgumentNullException(nameof(table),"An empty import document provided. Please upload relevant data to import.");
             }
-            ltCustomersDtos.Add(ltCustomersDto);
         }
         return Task.FromResult(ltCustomersDtos);
     }
