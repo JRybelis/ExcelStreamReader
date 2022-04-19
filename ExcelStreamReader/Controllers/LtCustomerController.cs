@@ -30,7 +30,7 @@ public class LtCustomerController : GenericControllerBase<LtCustomersDto, LtCust
         {
             foreach (var ltCustomersDto in ltCustomersDtos)
             {
-                var entity = _mapper.Map<LtCustomers>(ltCustomersDtos);
+                var entity = _mapper.Map<LtCustomers>(ltCustomersDto);
                 await _repository.Upsert(entity);
             }
         }
