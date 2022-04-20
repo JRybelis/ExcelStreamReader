@@ -23,45 +23,11 @@ public class LtCustomerController : GenericControllerBase<LtCustomersDto, LtCust
     [HttpPost]
     public async Task Import(string documentLocation)
     {
-        // var longTermCustomerService = new LtCustomersService<LtCustomersDto>();
         var listLtCustomersDtos = LtCustomersService.ReadExcelData(documentLocation).Result;
-        
-        foreach (var ltCustomersDtos in listLtCustomersDtos)
+
+        foreach (var entity in listLtCustomersDtos.SelectMany(ltCustomersDtos => ltCustomersDtos.Select(ltCustomersDto => _mapper.Map<LtCustomers>(ltCustomersDto))))
         {
-            foreach (var ltCustomersDto in ltCustomersDtos)
-            {
-                var entity = _mapper.Map<LtCustomers>(ltCustomersDto);
-                await _repository.Upsert(entity);
-            }
+            await _repository.Upsert(entity);
         }
     }
-    
-    /*[HttpGet]
-    public override async Task<IEnumerable<LtCustomersDto>> GetAll()
-    {
-        var entities = await _repository.GetAll();
-        var dtos = _mapper.Map<IEnumerable<LtCustomersDto>>(entities);
-        return dtos;
-    }
-
-    [HttpGet("{id}")]
-    public async Task<LtCustomers> GetById(int id)
-    {
-        var entity = await _repository.GetById(id);
-        return _mapper.Map<LtCustomers>(entity);
-    }
-
-    [HttpPost]
-    public async Task Upsert(LtCustomersDto dto)
-    {
-        var entity = _mapper.Map<LtCustomers>(dto);
-        await _repository.Upsert(entity);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task Delete(int id)
-    {
-        await _repository.Delete(id);
-    }*/
-    
 }
