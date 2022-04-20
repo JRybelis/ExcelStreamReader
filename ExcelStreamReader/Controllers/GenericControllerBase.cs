@@ -34,7 +34,7 @@ public class GenericControllerBase<TDto, TEntity> : ControllerBase
         return _mapper.Map<TDto>(entity);
     }
 
-    [HttpPost]
+    [HttpPut]
     public async Task Upsert(TDto dto)
     {
         var entity = _mapper.Map<TEntity>(dto);

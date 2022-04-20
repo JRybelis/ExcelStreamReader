@@ -21,6 +21,7 @@ public class LtCustomerController : GenericControllerBase<LtCustomersDto, LtCust
     }
 
     [HttpPost]
+    [Route("/LtCustomer")]
     public async Task Import(string documentLocation)
     {
         var listLtCustomersDtos = LtCustomersService.ReadExcelData(documentLocation).Result;
