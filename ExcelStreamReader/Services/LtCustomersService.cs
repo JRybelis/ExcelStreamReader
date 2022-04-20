@@ -10,8 +10,6 @@ public class LtCustomersService
     private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
     public static async Task<List<List<LtCustomersDto>>> ReadExcelData(string excelDocumentLocation)
     {
-        // var ExcelDocumentLocation = @"C:\Users\jokubasr\Downloads\report.xlsx";
-        var ltCustomersList = new List<LtCustomersDto>();
         IExcelDataReader? excelReader = null;
         
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -48,9 +46,9 @@ public class LtCustomersService
                 var ltCustomersDtos = await PopulateLtCustomersDtos(table);
                 listLtCustomersDtos.Add(ltCustomersDtos);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Logger.Error($"Populating LtCustomersDtos with {nameof(table)} data failed with.");
+                Logger.Error(e, $"Populating LtCustomersDtos with {nameof(table)} data failed.");
                 throw;
             }
         }
@@ -67,12 +65,16 @@ public class LtCustomersService
         {
             if (rowIndex >= 0 && table.Rows.Count > rowIndex)
             {
-                var ltCustomersDto = new LtCustomersDto();
-                var row = table.Rows[rowIndex];
-                
                 if (rowIndex == 0) continue;
 
-                ltCustomersDto.LtcGroupId = /*Convert.ToInt64((double)row["Column0"]); */long.Parse(row["Column0"].ToString());
+                var row = table.Rows[rowIndex];
+                var ltCustomersDto = new LtCustomersDto();
+
+                var isLtcGroupIdProvided = long.TryParse(row["Column0"].ToString(), out var ltcGroupId);
+                if (isLtcGroupIdProvided)
+                {
+                    ltCustomersDto.LtcGroupId = ltcGroupId;
+                }
                 ltCustomersDto.LtCustomerName = row["Column1"].ToString();
                 ltCustomersDto.PlateNumber = row["Column2"].ToString();
                 ltCustomersDto.Comment = row["Column3"].ToString() ?? "-"; // Comments - optional
@@ -82,7 +84,6 @@ public class LtCustomersService
                 ltCustomersDto.Enabled = bool.Parse(row["Column7"].ToString());
                 ltCustomersDto.LotPlaceTitle = row["Column8"].ToString();
                 ltCustomersDto.AdditionalPlateNumbers = row["Column9"].ToString() ?? "-"; // AdditionalPlateNumbers - optional 
-                
                 
                 ltCustomersDtos.Add(ltCustomersDto);
             }

@@ -32,19 +32,24 @@ public class GenericRepository<T> : IGenericRepository<T> where T : LtCustomers
 
     public async Task Upsert(T entity)
     {
-        var existingLtCustomer = await CheckForExistingLtCustomer(entity.LtcGroupId, entity.PlateNumber);
+        LtCustomers existingLtCustomer = null;
+        
+        if (entity.LtcGroupId is not null)
+        {
+            existingLtCustomer = await CheckForExistingLtCustomer(entity.LtcGroupId, entity.PlateNumber);    
+        }
         
         if (entity.LtcGroupId is not 0 && entity.LtcGroupId is not null && existingLtCustomer is not null)
         {
             _context.Update(entity);
         } else if (entity.LtcGroupId is 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(entity),
-                "does not belong to any subscriber group (groupId 0). Please select another groupId number, to import this subscriber.");
+            throw new ArgumentOutOfRangeException( $"{entity.PlateNumber}",
+                " does not belong to any subscriber group (groupId 0). Please select another groupId number, to import this subscriber.");
         } 
         else // no LtcGroupId or no existing booking with such an id
         {
-            /*entity.LtcGroupId =*/ // need to set a group id from request URL. 
+            entity.LtcGroupId = 2; // need to set a group id from request URL. 
             _context.Add(entity); 
         }
 
@@ -77,10 +82,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : LtCustomers
 
     private async Task<LtCustomers> CheckForExistingLtCustomer(long? LtcGroupId, string plateNumber)
     {
-        var existingLtCustomer = await _context.LtCustomers
-            .Where(LTC => LTC.Deleted == false && LTC.LtcGroupId == LtcGroupId)
-            .Include(LTC => LTC.PlateNumber == plateNumber).SingleOrDefaultAsync();
-
+        var existingLtCustomer = await _context.LtCustomers.SingleOrDefaultAsync(LTC =>
+            LTC.Deleted == false && LTC.LtcGroupId == LtcGroupId && LTC.PlateNumber == plateNumber);
+        
         return existingLtCustomer ?? null;
     }
 }
