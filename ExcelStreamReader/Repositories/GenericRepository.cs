@@ -48,7 +48,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : LtCustomers
             existingLtCustomer.ValidFrom = entity.ValidFrom;
             existingLtCustomer.ValidTo = entity.ValidTo;
             existingLtCustomer.Enabled = entity.Enabled;
-            existingLtCustomer.LotPlaceId = entity.LotPlaceId;
+            existingLtCustomer.LotPlaceTitle = entity.LotPlaceTitle;
             existingLtCustomer.AdditionalPlateNumbers = entity.AdditionalPlateNumbers;
             
             _context.Update(existingLtCustomer);

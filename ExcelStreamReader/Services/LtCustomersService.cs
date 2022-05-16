@@ -20,7 +20,7 @@ public class LtCustomersService
             if (excelDocumentLocation.EndsWith(".xls"))
             {
                 excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
-                // excelReader = ExcelReaderFactory.CreateCsvReader(fileStream);
+                // excelReader = ExcelReaderFactory.CreateCsvReader(fileStream); symbolic link cannot be read by CSV reader
             }
 
             if (excelDocumentLocation.EndsWith(".xlsx"))
