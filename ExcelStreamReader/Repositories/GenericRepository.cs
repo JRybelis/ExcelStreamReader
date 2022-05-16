@@ -41,7 +41,17 @@ public class GenericRepository<T> : IGenericRepository<T> where T : LtCustomers
         
         if (entity.LtcGroupId is not 0 && entity.LtcGroupId is not null && existingLtCustomer is not null)
         {
-            _context.Update(entity);
+            existingLtCustomer.LtCustomerName = entity.LtCustomerName;
+            existingLtCustomer.PlateNumber = entity.PlateNumber;
+            existingLtCustomer.Comment = entity.Comment;
+            existingLtCustomer.IsInLot = entity.IsInLot;
+            existingLtCustomer.ValidFrom = entity.ValidFrom;
+            existingLtCustomer.ValidTo = entity.ValidTo;
+            existingLtCustomer.Enabled = entity.Enabled;
+            existingLtCustomer.LotPlaceId = entity.LotPlaceId;
+            existingLtCustomer.AdditionalPlateNumbers = entity.AdditionalPlateNumbers;
+            
+            _context.Update(existingLtCustomer);
         } else if (entity.LtcGroupId is 0)
         {
             throw new ArgumentOutOfRangeException( $"{entity.PlateNumber}",
@@ -49,6 +59,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : LtCustomers
         } 
         else // no LtcGroupId or no existing booking with such an id
         {
+            entity.Deleted = false;
             entity.LtcGroupId = 2; // need to set a group id from request URL. 
             _context.Add(entity); 
         }
