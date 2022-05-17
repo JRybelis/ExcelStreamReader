@@ -41,13 +41,22 @@ public class GenericRepository<T> : IGenericRepository<T> where T : LtCustomers
         
         if (entity.LtcGroupId is not 0 && entity.LtcGroupId is not null && existingLtCustomer is not null)
         {
+            existingLtCustomer.LtcGroupId = entity.LtcGroupId; // import priskiria esamą LtcGroupId
             existingLtCustomer.LtCustomerName = entity.LtCustomerName;
             existingLtCustomer.PlateNumber = entity.PlateNumber;
             existingLtCustomer.Comment = entity.Comment;
             existingLtCustomer.IsInLot = entity.IsInLot;
-            existingLtCustomer.ValidFrom = entity.ValidFrom;
-            existingLtCustomer.ValidTo = entity.ValidTo;
-            existingLtCustomer.Enabled = entity.Enabled;
+            existingLtCustomer.ValidFrom = entity.ValidFrom; // import atnaujina datas
+            
+            // import atnaujina datas, jei naujos galiojančios ir kitokios. pateikus negaliojančią išvykimo datą, atnaujinimas nevykdomas.
+            if ((entity.ValidTo >= DateTime.Today &&
+                entity.ValidTo > existingLtCustomer.ValidTo) ||
+                (entity.ValidTo >= DateTime.Today &&
+                 entity.ValidTo < existingLtCustomer.ValidTo)) 
+            {
+                existingLtCustomer.ValidTo = entity.ValidTo;
+            }
+            existingLtCustomer.Enabled = entity.Enabled; 
             existingLtCustomer.LotPlaceTitle = entity.LotPlaceTitle;
             existingLtCustomer.AdditionalPlateNumbers = entity.AdditionalPlateNumbers;
             
